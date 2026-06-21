@@ -117,7 +117,6 @@
         .pilar-subtitle { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--primary-light); font-weight: 600; display: block; margin-bottom: 1rem; }
         .pilar-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--accent-warm); margin-bottom: 4rem; }
         .pilar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
-        .pilar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
         .pilar-card { background-color: var(--bg-surface); border-radius: var(--radius-md); padding: 3.5rem 2.5rem; text-align: left; border: 1px solid rgba(255, 255, 255, 0.01); transition: var(--transition-smooth); }
         .pilar-card:hover { transform: translateY(-8px); border-color: rgba(197, 160, 89, 0.2); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); }
         .pilar-icon { font-size: 2.2rem; margin-bottom: 1.8rem; display: inline-block; }
@@ -196,6 +195,38 @@
         /* Animations */
         .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition-smooth); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ==========================================================================
+           === TAMBAHAN TAMPILAN HP (RESPONSIVE MEDIA QUERIES) WITHOUT CHANGING BASE ===
+           ========================================================================== */
+        @media screen and (max-width: 768px) {
+            /* Spacing global di HP biar gak terlalu lowong */
+            .about-preview, .pilar-section, .katalog-preview, .faq-section { padding: 4rem 0; }
+            
+            /* Navbar HP Layout */
+            .nav-container { padding: 0 1rem; }
+            .brand-logo { font-size: 1.3rem; }
+            .nav-menu { gap: 1.2rem; }
+            /* Menyembunyikan menu link teks panjang di HP agar tidak numpuk, difokuskan ke core action */
+            .nav-links { display: none; } 
+
+            /* Hero Banner Typography adjustment */
+            .hero { padding-top: 4rem; background-attachment: scroll; /* Fix background lag di mobile */ }
+            .hero-tagline { font-size: 0.75rem; letter-spacing: 0.25em; margin-bottom: 1rem; }
+            .btn-primary { padding: 0.8rem 2rem; font-size: 0.8rem; }
+
+            /* Grid Adjustments (Menjadi 1 kolom vertikal rapi di HP) */
+            .pilar-grid, .katalog-grid, .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .pilar-card { padding: 2.5rem 1.8rem; }
+            .product-img { height: 320px; }
+
+            /* Cart Drawer HP Adjustment supaya fit screen */
+            .cart-drawer { width: 100%; right: -100%; padding: 1.5rem; }
+            .cart-drawer.open { right: 0; }
+
+            /* Floating button scale down dikit di HP */
+            .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; font-size: 24px; }
+        }
     </style>
 </head>
 <body>
