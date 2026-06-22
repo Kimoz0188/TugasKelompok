@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontak Reservasi | Abadi Nanjaya</title>
     <style>
-        /* === COHESIVE SYSTEM VARIABLES === */
         :root {
             --primary-light: #148f54;
             --bg-base: #070A08;
@@ -25,12 +24,8 @@
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 5; }
         a { text-decoration: none; color: inherit; }
 
-        /* === GLOBAL NAVBAR === */
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; padding: 1.2rem 0;
-            background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(12px);
-            z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.08);
-        }
+        /* === NAVBAR === */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1.2rem 0; background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.08); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .brand-logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--accent-warm); letter-spacing: 0.05em; }
         .nav-menu { display: flex; align-items: center; gap: 2.5rem; }
@@ -38,35 +33,61 @@
         .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 500; transition: var(--transition-smooth); }
         .nav-links a:hover, .nav-links a.active { color: var(--accent-warm); }
 
-        /* === PRIVATE RESERVATION / CONTACT SECTION (MATCHING IMAGE 2c325cf4-22ff-4014-9b1c-57b4b9455697) === */
+        /* === HAMBURGER BUTTON (MOBILE ONLY) === */
+        .hamburger-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-main);
+            font-size: 1.6rem;
+            line-height: 1;
+            transition: var(--transition-smooth);
+        }
+        .hamburger-btn:hover { color: var(--accent-warm); }
+
+        /* === MOBILE NAV DROPDOWN === */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 62px;
+            left: 0;
+            width: 100%;
+            background: rgba(7, 10, 8, 0.98);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+            z-index: 999;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .mobile-nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .mobile-nav a { display: block; padding: 1rem 1.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid rgba(255, 255, 255, 0.04); transition: var(--transition-smooth); }
+        .mobile-nav a:last-child { border-bottom: none; }
+        .mobile-nav a:hover, .mobile-nav a.active { color: var(--accent-warm); background: rgba(197, 160, 89, 0.05); }
+
+        /* === RESERVATION PAGE === */
         .reservation-page { padding: 12rem 0 8rem; min-height: 90vh; display: flex; align-items: center; }
         .reservation-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: start; width: 100%; }
         .reservation-info { text-align: left; }
         .res-subtitle { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--primary-light); font-weight: 600; display: block; margin-bottom: 1rem; }
         .res-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3.2rem); color: var(--accent-warm); margin-bottom: 1.5rem; }
         .reservation-info p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; margin-bottom: 3rem; max-width: 550px; }
-        
         .contact-meta-box { display: flex; flex-direction: column; gap: 2.5rem; }
         .meta-item h4 { font-family: var(--font-sans); font-size: 1rem; color: var(--text-main); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; font-weight: 600; }
         .meta-item p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0; }
-        
-        /* Form Styling */
+
+        /* Form */
         .reservation-form-wrapper { background-color: var(--bg-surface); padding: 3.5rem 3rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.01); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
         .form-group { margin-bottom: 2rem; text-align: left; }
         .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin-bottom: 0.8rem; }
         .form-group input, .form-group textarea { width: 100%; background: #131E17; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); padding: 1.1rem 1.2rem; color: var(--text-main); font-family: var(--font-sans); font-size: 0.95rem; transition: var(--transition-smooth); }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-warm); background: #17261D; }
         .form-group textarea { resize: none; min-height: 140px; }
-        
-        /* Submit Button */
         .btn-submit-form { width: 100%; padding: 1.2rem; background-color: #FCD997; color: #3E2614; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition-smooth); }
         .btn-submit-form:hover { background-color: var(--accent-warm); color: var(--bg-base); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(197, 160, 89, 0.2); }
-
-        @media (max-width: 992px) {
-            .reservation-page { padding: 8rem 0 4rem; }
-            .reservation-grid { grid-template-columns: 1fr; gap: 3.5rem; }
-            .reservation-form-wrapper { padding: 2.5rem 2rem; }
-        }
 
         /* === FOOTER === */
         footer { padding: 5rem 0 2rem; border-top: 1px solid rgba(197, 160, 89, 0.08); background: #040605; }
@@ -77,11 +98,26 @@
 
         .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition-smooth); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* === MOBILE RESPONSIVE === */
+        @media (max-width: 992px) {
+            .reservation-page { padding: 8rem 0 4rem; }
+            .reservation-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+            .reservation-form-wrapper { padding: 2.5rem 2rem; }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger-btn { display: flex; align-items: center; justify-content: center; }
+            .mobile-nav { display: block; }
+            .nav-menu { gap: 1.2rem; }
+            .brand-logo { font-size: 1.3rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR NAVIGATION -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="brand-logo">Abadi Nanjaya</a>
@@ -92,15 +128,26 @@
                     <a href="tentang.html">Cerita Kami</a>
                     <a href="kontak.html" class="active">Kontak</a>
                 </div>
+                <!-- HAMBURGER BUTTON — hanya muncul di mobile via CSS -->
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Buka menu navigasi" aria-expanded="false">
+                    ☰
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- MAIN CONTACT CONTENT (MATCHING IMAGE 2c325cf4-22ff-4014-9b1c-57b4b9455697) -->
+    <!-- MOBILE NAV DROPDOWN — hanya muncul di mobile via CSS -->
+    <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <a href="index.html">Beranda</a>
+        <a href="koleksi.html">Katalog Koleksi</a>
+        <a href="tentang.html">Cerita Kami</a>
+        <a href="kontak.html" class="active">Kontak</a>
+    </div>
+
+    <!-- MAIN CONTACT CONTENT -->
     <main class="reservation-page">
         <div class="container reservation-grid">
             
-            <!-- Bagian Kiri: Info Text & Meta -->
             <div class="reservation-info reveal">
                 <span class="res-subtitle">Private Session</span>
                 <h2 class="res-title">Kunjungi Galeri Arsip</h2>
@@ -118,24 +165,20 @@
                 </div>
             </div>
 
-            <!-- Bagian Kanan: Form Reservasi -->
             <div class="reservation-form-wrapper reveal" style="transition-delay: 0.1s;">
                 <form onsubmit="event.preventDefault(); alert('Jadwal pertemuan Anda berhasil diajukan! Tim VIP Concierge kami akan segera menghubungi Anda melalui email.');">
                     <div class="form-group">
                         <label for="input-nama">Nama Lengkap Pemohon</label>
                         <input type="text" id="input-nama" placeholder="Contoh: Prisha Dewantara" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="input-email">Alamat Email Aktif</label>
                         <input type="email" id="input-email" placeholder="prisha@domain.com" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="input-detail">Keperluan Reservasi / Detail Rencana</label>
                         <textarea id="input-detail" placeholder="Tuliskan spesifikasi detail pesanan kustom atau preferensi tanggal kunjungan galeri..." required></textarea>
                     </div>
-                    
                     <button type="submit" class="btn-submit-form">Ajukan Jadwal Pertemuan</button>
                 </form>
             </div>
@@ -164,9 +207,9 @@
         </div>
     </footer>
 
-    <!-- Reveal Animation JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Reveal animasi scroll
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => { 
@@ -177,6 +220,27 @@
                 });
             }, { root: null, threshold: 0.05 });
             revealElements.forEach(el => { revealObserver.observe(el); });
+
+            // Hamburger Menu Toggle
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (hamburgerBtn && mobileNav) {
+                hamburgerBtn.addEventListener('click', () => {
+                    const isOpen = mobileNav.classList.toggle('open');
+                    hamburgerBtn.textContent = isOpen ? '✕' : '☰';
+                    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+                    mobileNav.setAttribute('aria-hidden', !isOpen);
+                });
+                mobileNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNav.classList.remove('open');
+                        hamburgerBtn.textContent = '☰';
+                        hamburgerBtn.setAttribute('aria-expanded', false);
+                        mobileNav.setAttribute('aria-hidden', true);
+                    });
+                });
+            }
         });
     </script>
 </body>
