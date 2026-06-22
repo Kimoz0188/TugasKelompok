@@ -25,25 +25,51 @@
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 5; }
         a { text-decoration: none; color: inherit; }
 
-        /* === GLOBAL NAVBAR === */
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0;
-            background: rgba(7, 10, 8, 0.92); backdrop-filter: blur(12px);
-            z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-        }
+        /* === NAVBAR === */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0; background: rgba(7, 10, 8, 0.92); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .brand-logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--accent-warm); }
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 500; transition: var(--transition-smooth); }
         .nav-links a:hover, .nav-links a.active { color: var(--accent-warm); }
 
-        /* === WATERMARK ORNAMEN NUSANTARA === */
-        .bg-gunungan {
-            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 70vw; height: 80vh; opacity: 0.03; pointer-events: none; z-index: 1;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150"><path d="M50 10 L90 110 L70 110 L70 140 L30 140 L30 110 L10 110 Z" fill="none" stroke="%23C5A059" stroke-width="0.5"/><circle cx="50" cy="70" r="15" fill="none" stroke="%23C5A059" stroke-width="0.5"/></svg>');
-            background-size: contain; background-repeat: no-repeat; background-position: center;
+        /* === HAMBURGER BUTTON (MOBILE ONLY) === */
+        .hamburger-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-main);
+            font-size: 1.6rem;
+            line-height: 1;
+            transition: var(--transition-smooth);
         }
+        .hamburger-btn:hover { color: var(--accent-warm); }
+
+        /* === MOBILE NAV DROPDOWN === */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 100%;
+            background: rgba(7, 10, 8, 0.98);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+            z-index: 999;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .mobile-nav.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .mobile-nav a { display: block; padding: 1rem 1.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid rgba(255, 255, 255, 0.04); transition: var(--transition-smooth); }
+        .mobile-nav a:last-child { border-bottom: none; }
+        .mobile-nav a:hover, .mobile-nav a.active { color: var(--accent-warm); background: rgba(197, 160, 89, 0.05); }
+
+        /* === WATERMARK === */
+        .bg-gunungan { position: fixed; top: 15%; left: 50%; transform: translateX(-50%); width: 70vw; height: 80vh; opacity: 0.03; pointer-events: none; z-index: 1; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150"><path d="M50 10 L90 110 L70 110 L70 140 L30 140 L30 110 L10 110 Z" fill="none" stroke="%23C5A059" stroke-width="0.5"/><circle cx="50" cy="70" r="15" fill="none" stroke="%23C5A059" stroke-width="0.5"/></svg>'); background-size: contain; background-repeat: no-repeat; background-position: center; }
 
         /* === EDITORIAL LAYOUT === */
         .chronicle-hero { text-align: center; padding: 4rem 0 3rem; }
@@ -62,39 +88,13 @@
         .art-frame img { width: 100%; height: auto; border-radius: 4px; filter: sepia(15%); }
         .art-caption { font-family: var(--font-serif); font-size: 0.85rem; text-align: center; margin-top: 1rem; color: var(--accent-warm); font-style: italic; }
 
-        /* === STYLE TOGGLE CERITA (READ MORE) === */
-        .cerita-lengkap {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.8s ease-out, opacity 0.6s ease;
-        }
-        .cerita-lengkap.buka {
-            max-height: 2000px; /* Angka besar agar teks penampung tidak terpotong */
-            opacity: 1;
-        }
-        .btn-toggle-cerita {
-            background: transparent;
-            border: 1px solid var(--accent-warm);
-            color: var(--accent-warm);
-            padding: 0.8rem 2rem;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            border-radius: var(--radius-md);
-            margin-top: 1.5rem;
-            transition: var(--transition-smooth);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn-toggle-cerita:hover {
-            background: var(--accent-warm);
-            color: var(--bg-base);
-        }
+        /* === READ MORE TOGGLE === */
+        .cerita-lengkap { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.8s ease-out, opacity 0.6s ease; }
+        .cerita-lengkap.buka { max-height: 2000px; opacity: 1; }
+        .btn-toggle-cerita { background: transparent; border: 1px solid var(--accent-warm); color: var(--accent-warm); padding: 0.8rem 2rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: var(--radius-md); margin-top: 1.5rem; transition: var(--transition-smooth); display: inline-flex; align-items: center; gap: 10px; }
+        .btn-toggle-cerita:hover { background: var(--accent-warm); color: var(--bg-base); }
 
-        /* === FILOSOFI TRIAD PILAR === */
+        /* === FILOSOFI TRIAD === */
         .philosophy-section { background-color: var(--bg-surface); padding: 6rem 0; margin-bottom: 6rem; border-y: 1px solid rgba(197, 160, 89, 0.05); }
         .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
         .triad-card { background: var(--bg-base); padding: 3rem 2rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.02); transition: var(--transition-smooth); position: relative; }
@@ -110,7 +110,16 @@
         .reveal { opacity: 0; transform: translateY(40px); transition: var(--transition-smooth); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
+        /* === MOBILE RESPONSIVE === */
         @media (max-width: 850px) { .story-grid { grid-template-columns: 1fr; gap: 3rem; } }
+
+        @media screen and (max-width: 768px) {
+            body { padding-top: 5rem; }
+            .nav-links { display: none; }
+            .hamburger-btn { display: flex; align-items: center; justify-content: center; }
+            .mobile-nav { display: block; }
+            .brand-logo { font-size: 1.3rem; }
+        }
     </style>
 </head>
 <body>
@@ -120,14 +129,28 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="brand-logo">Abadi Nanjaya</a>
-            <div class="nav-links">
-                <a href="index.html">Beranda</a>
-                <a href="koleksi.html">Katalog Koleksi</a>
-                <a href="tentang.html" class="active">Cerita Kami</a>
-                <a href="kontak.html">Kontak</a> <!-- LINK NAVIGASI BARU -->
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <div class="nav-links">
+                    <a href="index.html">Beranda</a>
+                    <a href="koleksi.html">Katalog Koleksi</a>
+                    <a href="tentang.html" class="active">Cerita Kami</a>
+                    <a href="kontak.html">Kontak</a>
+                </div>
+                <!-- HAMBURGER BUTTON — hanya muncul di mobile via CSS -->
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Buka menu navigasi" aria-expanded="false">
+                    ☰
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- MOBILE NAV DROPDOWN — hanya muncul di mobile via CSS -->
+    <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <a href="index.html">Beranda</a>
+        <a href="koleksi.html">Katalog Koleksi</a>
+        <a href="tentang.html" class="active">Cerita Kami</a>
+        <a href="kontak.html">Kontak</a>
+    </div>
 
     <header class="container chronicle-hero reveal">
         <span class="sub-vintage">Arsip Riwayat & Kebudayaan</span>
@@ -149,12 +172,10 @@
                 <h3>Awal Berdiri (2020)</h3>
                 <p>Kisah Abadi Nanjaya dimulai pada tahun 2020. Pendiri perusahaan, seorang pemuda bernama <strong>Raka Nanjaya</strong>, memiliki kecintaan besar terhadap budaya Indonesia sejak kecil. Ia tumbuh di lingkungan yang kaya akan tradisi. Kakeknya adalah seorang pengrajin ukiran kayu, sementara neneknya sering menceritakan legenda-legenda dari berbagai daerah di Nusantara.</p>
                 
-                <!-- TOMBOL READ MORE INTERAKTIF -->
                 <button class="btn-toggle-cerita" id="btnCerita">
                     <span id="textTombol">Baca Cerita Selengkapnya</span> <span id="panahTombol">&darr;</span>
                 </button>
 
-                <!-- KONTEN YANG DISEMBUNYIKAN & AKAN TERBUKA SAAT DIKLIK -->
                 <div class="cerita-lengkap" id="kontenLengkap">
                     <p style="margin-top: 1.5rem;">Ketika menempuh pendidikan di kota besar, Raka menyadari bahwa banyak anak muda lebih mengenal budaya luar dibandingkan budaya daerahnya sendiri. Ia melihat bahwa produk-produk bertema budaya sering kali dianggap kuno dan kurang menarik bagi generasi muda. Pertanyaan sederhana tersebut menjadi titik awal lahirnya Abadi Nanjaya.</p>
 
@@ -168,7 +189,6 @@
                 </div>
             </div>
 
-            <!-- Sticky Visual Layout -->
             <div class="reveal" style="position: sticky; top: 8rem;">
                 <div class="art-frame">
                     <img src="Garuda1.png" alt="Seni Abadi Nanjaya">
@@ -177,7 +197,6 @@
             </div>
         </section>
 
-        <!-- PILAR FILOSOFI -->
         <section class="philosophy-section reveal">
             <h2 style="text-align: center; font-family: var(--font-serif); color: var(--accent-warm);">Filosofi Perusahaan</h2>
             <div class="triad-grid">
@@ -187,7 +206,6 @@
             </div>
         </section>
 
-        <!-- MOTO BANNER -->
         <section class="moto-banner reveal">
             <h2>"Merawat Warisan, Menginspirasi Masa Depan."</h2>
             <p style="max-width: 750px; margin: 2rem auto 0; font-size: 1.05rem; color: var(--text-muted);">Kini, Abadi Nanjaya bercita-cita membawa kekayaan Nusantara ke panggung dunia melalui produk-produk kreatif yang menggabungkan nilai tradisional dan desain modern. Budaya Nusantara bukan sekadar peninggalan masa lalu, melainkan identitas yang harus dijaga, dibanggakan, dan diwariskan secara turun-temurun.</p>
@@ -196,17 +214,16 @@
 
     <footer><p>&copy; 2026 Abadi Nanjaya. Merangkai Nusantara. Seluruh Hak Cipta Dilindungi.</p></footer>
 
-    <!-- JAVASCRIPT UNTUK AKSI TOMBOL BACA SELENGKAPNYA -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Logika Reveal Animasi Scroll
+            // Reveal animasi scroll
             const reveals = document.querySelectorAll('.reveal');
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); } });
             }, { threshold: 0.05 });
             reveals.forEach(r => obs.observe(r));
 
-            // Logika Tombol Baca Selengkapnya
+            // Tombol Baca Selengkapnya
             const btnCerita = document.getElementById('btnCerita');
             const kontenLengkap = document.getElementById('kontenLengkap');
             const textTombol = document.getElementById('textTombol');
@@ -214,17 +231,36 @@
 
             btnCerita.addEventListener('click', () => {
                 kontenLengkap.classList.toggle('buka');
-                
-                if(kontenLengkap.classList.contains('buka')) {
+                if (kontenLengkap.classList.contains('buka')) {
                     textTombol.innerText = "Sembunyikan Cerita";
                     panahTombol.innerHTML = "&uarr;";
                 } else {
                     textTombol.innerText = "Baca Cerita Selengkapnya";
                     panahTombol.innerHTML = "&darr;";
-                    // Opsional: Scroll otomatis balik ke atas tombol setelah disembunyikan
                     btnCerita.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
+
+            // Hamburger Menu Toggle
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (hamburgerBtn && mobileNav) {
+                hamburgerBtn.addEventListener('click', () => {
+                    const isOpen = mobileNav.classList.toggle('open');
+                    hamburgerBtn.textContent = isOpen ? '✕' : '☰';
+                    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+                    mobileNav.setAttribute('aria-hidden', !isOpen);
+                });
+                mobileNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNav.classList.remove('open');
+                        hamburgerBtn.textContent = '☰';
+                        hamburgerBtn.setAttribute('aria-expanded', false);
+                        mobileNav.setAttribute('aria-hidden', true);
+                    });
+                });
+            }
         });
     </script>
 </body>
