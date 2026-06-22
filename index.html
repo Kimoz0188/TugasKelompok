@@ -237,9 +237,149 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition-smooth); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ==========================================================================
-           === TAMBAHAN TAMPILAN HP (RESPONSIVE MEDIA QUERIES) WITHOUT CHANGING BASE ===
-           ========================================================================== */
+        /* === WAYANG INTRO SCREEN === */
+        #wayang-intro {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #040806;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        #wayang-intro.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .wayang-stage {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .wayang-left, .wayang-right {
+            position: absolute; bottom: 0; height: 85vh;
+            width: auto; max-width: 44vw;
+            object-fit: contain;
+            transition: transform 1.4s cubic-bezier(0.76, 0, 0.24, 1);
+            filter: drop-shadow(0 0 25px rgba(197,160,89,0.3));
+            user-select: none; pointer-events: none;
+        }
+        /* Wayang kiri: mulai di tengah sedikit ke kiri, lalu bergerak keluar ke kiri */
+        .wayang-left {
+            left: 50%; transform-origin: bottom center;
+            transform: translateX(-100%);
+        }
+        /* Wayang kanan: mulai di tengah sedikit ke kanan, di-flip, lalu bergerak keluar ke kanan */
+        .wayang-right {
+            left: 50%; transform-origin: bottom center;
+            transform: translateX(0%) scaleX(-1);
+        }
+
+        /* Saat membuka: keduanya geser jauh keluar layar */
+        .wayang-left.open  { transform: translateX(-220%); }
+        .wayang-right.open { transform: translateX(120%) scaleX(-1); }
+
+        .wayang-center-text {
+            position: absolute; text-align: center; z-index: 2;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+        }
+        .wayang-center-text.show { opacity: 1; transform: translateY(0); }
+        .wayang-center-text span {
+            display: block; font-family: var(--font-serif);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: rgba(197, 160, 89, 0.5);
+            letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem;
+        }
+        .wayang-center-text h2 {
+            font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--accent-warm); font-weight: 400; letter-spacing: 0.05em;
+        }
+
+        .wayang-skip-btn {
+            position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+            background: transparent; border: 1px solid rgba(197, 160, 89, 0.4);
+            color: rgba(197, 160, 89, 0.7); font-family: var(--font-sans);
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em;
+            padding: 0.6rem 2rem; cursor: pointer; border-radius: 2px;
+            transition: all 0.3s ease; z-index: 3;
+            opacity: 0; animation: fadeInBtn 0.5s ease 2s forwards;
+        }
+        .wayang-skip-btn:hover { background: rgba(197, 160, 89, 0.1); border-color: var(--accent-warm); color: var(--accent-warm); }
+        @keyframes fadeInBtn { to { opacity: 1; } }
+
+        .wayang-ornament {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 2px; height: 60vh; background: linear-gradient(to bottom, transparent, rgba(197,160,89,0.15), transparent);
+            z-index: 1;
+        }
+
+        body.intro-active { overflow: hidden; }
+
+        /* === MARQUEE FOTO RUNNING === */
+        .marquee-section {
+            width: 100%; overflow: hidden;
+            padding: 2.5rem 0;
+            background: var(--bg-surface);
+            border-top: 1px solid rgba(197,160,89,0.08);
+            border-bottom: 1px solid rgba(197,160,89,0.08);
+            margin-bottom: 0;
+            position: relative;
+        }
+        /* fade tepi kiri kanan */
+        .marquee-section::before,
+        .marquee-section::after {
+            content: ''; position: absolute; top: 0; width: 120px; height: 100%; z-index: 2; pointer-events: none;
+        }
+        .marquee-section::before { left: 0;  background: linear-gradient(to right, var(--bg-surface), transparent); }
+        .marquee-section::after  { right: 0; background: linear-gradient(to left,  var(--bg-surface), transparent); }
+
+        .marquee-track {
+            display: flex; align-items: center; gap: 2rem;
+            width: max-content;
+            animation: marquee-scroll 28s linear infinite;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            flex-shrink: 0;
+            height: 90px;
+            width: auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(197,160,89,0.2);
+            background: transparent;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .marquee-item:hover {
+            border-color: var(--accent-warm);
+            transform: scale(1.12) translateY(-4px);
+            box-shadow: 0 10px 25px rgba(197,160,89,0.2);
+        }
+        .marquee-item img {
+            height: 100%; width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* label teks di antara foto */
+        .marquee-divider {
+            flex-shrink: 0;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: rgba(197,160,89,0.35);
+            letter-spacing: 0.2em;
+            user-select: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .marquee-item { height: 65px; }
+            .marquee-track { gap: 1.5rem; animation-duration: 20s; }
+            .marquee-section::before,
+            .marquee-section::after { width: 60px; }
+        }
         @media screen and (max-width: 768px) {
             .about-preview, .pilar-section, .katalog-preview, .faq-section { padding: 4rem 0; }
             
@@ -269,7 +409,30 @@
         }
     </style>
 </head>
-<body>
+<body class="intro-active">
+
+    <!-- === WAYANG INTRO SCREEN === -->
+    <div id="wayang-intro">
+        <div class="wayang-stage">
+
+            <!-- Garis ornamen tengah -->
+            <div class="wayang-ornament"></div>
+
+            <!-- Teks tengah -->
+            <div class="wayang-center-text" id="wayang-text">
+                <span>Selamat Datang</span>
+                <h2>Abadi Nanjaya</h2>
+            </div>
+
+            <!-- Wayang Kiri — foto asli wayang1.png -->
+            <img class="wayang-left" id="wayang-kiri" src="wayang1.png" alt="Wayang Kiri">
+
+            <!-- Wayang Kanan — foto asli wayang2.png (menghadap ke dalam) -->
+            <img class="wayang-right" id="wayang-kanan" src="wayang2.png" alt="Wayang Kanan">
+
+            <button class="wayang-skip-btn" id="wayang-skip">Masuk &rarr;</button>
+        </div>
+    </div>
 
     <!-- NAVBAR NAVIGATION -->
     <nav class="navbar">
@@ -373,6 +536,46 @@
                 </div>
             </div>
         </section>
+
+        <!-- MARQUEE FOTO RUNNING -->
+        <div class="marquee-section">
+            <div class="marquee-track" id="marquee-track">
+                <!-- Set 1 -->
+                <div class="marquee-item"><img src="foto1.png" alt="Topeng Nusantara"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto2.png" alt="Naga Nusantara"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto3.png" alt="Gunungan Wayang"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto4.png" alt="Bunga Kamboja"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto5.png" alt="Topeng Barong"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto6.png" alt="Kipas Batik"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto7.png" alt="Rafflesia"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto8.png" alt="Keris"></div>
+                <span class="marquee-divider">✦</span>
+                <!-- Set 2 (duplikat untuk looping mulus) -->
+                <div class="marquee-item"><img src="foto1.png" alt="Topeng Nusantara"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto2.png" alt="Naga Nusantara"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto3.png" alt="Gunungan Wayang"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto4.png" alt="Bunga Kamboja"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto5.png" alt="Topeng Barong"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto6.png" alt="Kipas Batik"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto7.png" alt="Rafflesia"></div>
+                <span class="marquee-divider">✦</span>
+                <div class="marquee-item"><img src="foto8.png" alt="Keris"></div>
+                <span class="marquee-divider">✦</span>
+            </div>
+        </div>
 
         <!-- HIGHLIGHT KATALOG -->
         <section class="container katalog-preview">
@@ -517,6 +720,40 @@
             revealElements.forEach(el => { revealObserver.observe(el); });
 
             loadCartFromStorage();
+
+            // --- WAYANG INTRO ENGINE ---
+            const intro      = document.getElementById('wayang-intro');
+            const wayangKiri = document.getElementById('wayang-kiri');
+            const wayangKanan= document.getElementById('wayang-kanan');
+            const wayangText = document.getElementById('wayang-text');
+            const skipBtn    = document.getElementById('wayang-skip');
+
+            function closeIntro() {
+                wayangKiri.classList.add('open');
+                wayangKanan.classList.add('open');
+                setTimeout(() => {
+                    intro.classList.add('fade-out');
+                    document.body.classList.remove('intro-active');
+                }, 1000);
+            }
+
+            // Tampilkan teks tengah setelah 0.5s
+            setTimeout(() => { wayangText.classList.add('show'); }, 500);
+
+            // Auto-close setelah 4 detik
+            let autoTimer = setTimeout(closeIntro, 4000);
+
+            // Skip manual
+            skipBtn.addEventListener('click', () => {
+                clearTimeout(autoTimer);
+                closeIntro();
+            });
+
+            // Klik/tap di mana saja juga skip
+            intro.addEventListener('click', () => {
+                clearTimeout(autoTimer);
+                closeIntro();
+            });
 
             // --- CINEMATIC LIGHT ENGINE ---
             const cinematicTitle = document.getElementById('cinematic-title');
