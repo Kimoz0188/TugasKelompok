@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abadi Nanjaya | Premium Heritage Merchandise</title>
     <style>
+        @import url(https://fonts.google.com/share?selection.family=Playfair+Display:ital,wght@0,400..900;1,400..900);
         /* === COHESIVE SYSTEM VARIABLES === */
         :root {
             --primary-light: #148f54;
@@ -14,7 +15,7 @@
             --text-muted: #A3AFA8;
             --accent-warm: #C5A059;
             --font-serif: 'Playfair Display', 'Georgia', serif;
-            --font-sans: 'Inter', sans-serif;
+            --font-sans: 'Playfair Display','Georigia', serif;
             --radius-sm: 4px;
             --radius-md: 8px;
             --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -142,7 +143,13 @@
         .about-preview { padding: 8rem 0; background-color: var(--bg-surface); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
         .about-box { max-width: 850px; margin: 0 auto; text-align: center; }
         .section-title { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); color: var(--accent-warm); margin-bottom: 1.5rem; }
-        .about-box p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.9; margin-bottom: 3rem; }
+        .about-box p { 
+    font-family: var(--font-serif); 
+    color: var(--text-muted); 
+    font-size: 1.1rem; 
+    line-height: 1.9; 
+    margin-bottom: 3rem; 
+}
         .btn-selengkapnya {
             display: inline-flex; align-items: center; gap: 12px; padding: 1.1rem 2.8rem;
             font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em;
@@ -260,18 +267,15 @@
             filter: drop-shadow(0 0 25px rgba(197,160,89,0.3));
             user-select: none; pointer-events: none;
         }
-        /* Wayang kiri: mulai di tengah sedikit ke kiri, lalu bergerak keluar ke kiri */
         .wayang-left {
             left: 50%; transform-origin: bottom center;
             transform: translateX(-100%);
         }
-        /* Wayang kanan: mulai di tengah sedikit ke kanan, di-flip, lalu bergerak keluar ke kanan */
         .wayang-right {
             left: 50%; transform-origin: bottom center;
             transform: translateX(0%) scaleX(-1);
         }
 
-        /* Saat membuka: keduanya geser jauh keluar layar */
         .wayang-left.open  { transform: translateX(-220%); }
         .wayang-right.open { transform: translateX(120%) scaleX(-1); }
 
@@ -322,7 +326,6 @@
             margin-bottom: 0;
             position: relative;
         }
-        /* fade tepi kiri kanan */
         .marquee-section::before,
         .marquee-section::after {
             content: ''; position: absolute; top: 0; width: 120px; height: 100%; z-index: 2; pointer-events: none;
@@ -335,7 +338,7 @@
             width: max-content;
             animation: marquee-scroll 28s linear infinite;
         }
-        .marquee-track:hover { animation-play-state: paused; }
+
 
         @keyframes marquee-scroll {
             from { transform: translateX(0); }
@@ -364,7 +367,6 @@
             display: block;
         }
 
-        /* label teks di antara foto */
         .marquee-divider {
             flex-shrink: 0;
             font-family: var(--font-serif);
@@ -388,10 +390,8 @@
             .nav-menu { gap: 1.2rem; }
             .nav-links { display: none; }
 
-            /* Tampilkan hamburger di mobile */
             .hamburger-btn { display: flex; align-items: center; justify-content: center; }
 
-            /* Tampilkan mobile nav saat open */
             .mobile-nav { display: block; }
 
             .hero { padding-top: 4rem; background-attachment: scroll; }
@@ -728,32 +728,42 @@
             const wayangText = document.getElementById('wayang-text');
             const skipBtn    = document.getElementById('wayang-skip');
 
-            function closeIntro() {
-                wayangKiri.classList.add('open');
-                wayangKanan.classList.add('open');
-                setTimeout(() => {
-                    intro.classList.add('fade-out');
-                    document.body.classList.remove('intro-active');
-                }, 1000);
+            // Cek sessionStorage: intro hanya tampil sekali per sesi browser
+            if (sessionStorage.getItem('abadi_intro_shown')) {
+                // Sudah pernah tampil — sembunyikan langsung tanpa animasi
+                intro.style.display = 'none';
+                document.body.classList.remove('intro-active');
+            } else {
+                // Pertama kali masuk — jalankan intro normal
+                function closeIntro() {
+                    wayangKiri.classList.add('open');
+                    wayangKanan.classList.add('open');
+                    setTimeout(() => {
+                        intro.classList.add('fade-out');
+                        document.body.classList.remove('intro-active');
+                        // Tandai sudah tampil di sesi ini
+                        sessionStorage.setItem('abadi_intro_shown', '1');
+                    }, 1000);
+                }
+
+                // Tampilkan teks tengah setelah 0.5s
+                setTimeout(() => { wayangText.classList.add('show'); }, 500);
+
+                // Auto-close setelah 4 detik
+                let autoTimer = setTimeout(closeIntro, 4000);
+
+                // Skip manual
+                skipBtn.addEventListener('click', () => {
+                    clearTimeout(autoTimer);
+                    closeIntro();
+                });
+
+                // Klik/tap di mana saja juga skip
+                intro.addEventListener('click', () => {
+                    clearTimeout(autoTimer);
+                    closeIntro();
+                });
             }
-
-            // Tampilkan teks tengah setelah 0.5s
-            setTimeout(() => { wayangText.classList.add('show'); }, 500);
-
-            // Auto-close setelah 4 detik
-            let autoTimer = setTimeout(closeIntro, 4000);
-
-            // Skip manual
-            skipBtn.addEventListener('click', () => {
-                clearTimeout(autoTimer);
-                closeIntro();
-            });
-
-            // Klik/tap di mana saja juga skip
-            intro.addEventListener('click', () => {
-                clearTimeout(autoTimer);
-                closeIntro();
-            });
 
             // --- CINEMATIC LIGHT ENGINE ---
             const cinematicTitle = document.getElementById('cinematic-title');
