@@ -14,7 +14,7 @@
             --text-muted: #A3AFA8;
             --accent-warm: #C5A059;
             --font-serif: 'Playfair Display', 'Georgia', serif;
-            --font-sans: 'Inter', sans-serif;
+            --font-sans: 'Playfair Display','Georigia', serif;
             --radius-md: 8px;
             --radius-lg: 16px;
             --transition-smooth: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -94,6 +94,67 @@
         .btn-toggle-cerita { background: transparent; border: 1px solid var(--accent-warm); color: var(--accent-warm); padding: 0.8rem 2rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: var(--radius-md); margin-top: 1.5rem; transition: var(--transition-smooth); display: inline-flex; align-items: center; gap: 10px; }
         .btn-toggle-cerita:hover { background: var(--accent-warm); color: var(--bg-base); }
 
+        /* === MARQUEE FOTO RUNNING === */
+        .marquee-section {
+            width: 100%; overflow: hidden;
+            padding: 2.5rem 0;
+            background: var(--bg-base);
+            border-top: 1px solid rgba(197,160,89,0.08);
+            border-bottom: 1px solid rgba(197,160,89,0.08);
+            position: relative;
+        }
+        .marquee-section::before,
+        .marquee-section::after {
+            content: ''; position: absolute; top: 0; width: 120px; height: 100%; z-index: 2; pointer-events: none;
+        }
+        .marquee-section::before { left: 0;  background: linear-gradient(to right, var(--bg-base), transparent); }
+        .marquee-section::after  { right: 0; background: linear-gradient(to left,  var(--bg-base), transparent); }
+
+        .marquee-track {
+            display: flex; align-items: center; gap: 2rem;
+            width: max-content;
+            animation: marquee-scroll 28s linear infinite;
+        }
+
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            flex-shrink: 0;
+            height: 90px;
+            width: auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(197,160,89,0.2);
+            background: transparent;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .marquee-item:hover {
+            border-color: var(--accent-warm);
+            transform: scale(1.12) translateY(-4px);
+            box-shadow: 0 10px 25px rgba(197,160,89,0.2);
+        }
+        .marquee-item img { height: 100%; width: auto; object-fit: contain; display: block; }
+
+        .marquee-divider {
+            flex-shrink: 0;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: rgba(197,160,89,0.35);
+            letter-spacing: 0.2em;
+            user-select: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .marquee-item { height: 65px; }
+            .marquee-track { gap: 1.5rem; animation-duration: 20s; }
+            .marquee-section::before,
+            .marquee-section::after { width: 60px; }
+        }
+
         /* === FILOSOFI TRIAD === */
         .philosophy-section { background-color: var(--bg-surface); padding: 6rem 0; margin-bottom: 6rem; border-y: 1px solid rgba(197, 160, 89, 0.05); }
         .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
@@ -143,7 +204,7 @@
             </div>
         </div>
     </nav>
-
+    
     <!-- MOBILE NAV DROPDOWN — hanya muncul di mobile via CSS -->
     <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
         <a href="index.html">Beranda</a>
@@ -196,7 +257,49 @@
                 </div>
             </div>
         </section>
+    </main>
 
+    <!-- MARQUEE FOTO RUNNING — di atas Filosofi Perusahaan -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <!-- Set 1 -->
+            <div class="marquee-item"><img src="foto1.png" alt="Topeng Nusantara"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto2.png" alt="Naga Nusantara"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto3.png" alt="Gunungan Wayang"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto4.png" alt="Bunga Kamboja"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto5.png" alt="Topeng Barong"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto6.png" alt="Kipas Batik"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto7.png" alt="Rafflesia"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto8.png" alt="Keris"></div>
+            <span class="marquee-divider">✦</span>
+            <!-- Set 2 (duplikat untuk looping mulus) -->
+            <div class="marquee-item"><img src="foto1.png" alt="Topeng Nusantara"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto2.png" alt="Naga Nusantara"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto3.png" alt="Gunungan Wayang"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto4.png" alt="Bunga Kamboja"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto5.png" alt="Topeng Barong"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto6.png" alt="Kipas Batik"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto7.png" alt="Rafflesia"></div>
+            <span class="marquee-divider">✦</span>
+            <div class="marquee-item"><img src="foto8.png" alt="Keris"></div>
+            <span class="marquee-divider">✦</span>
+        </div>
+    </div>
+
+    <main class="container" style="margin-top: 0;">
         <section class="philosophy-section reveal">
             <h2 style="text-align: center; font-family: var(--font-serif); color: var(--accent-warm);">Filosofi Perusahaan</h2>
             <div class="triad-grid">
