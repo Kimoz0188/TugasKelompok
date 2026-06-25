@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="bird.png" type="image/png">
+    <link class="reveal" rel="icon" href="bird.png" type="image/png">
     <title>Katalog Mahakarya | Abadi Nanjaya</title>
     
     <style>
+        @import url(https://fonts.google.com/share?selection.family=Playfair+Display:ital,wght@0,400..900;1,400..900);
         /* === COLOR SYSTEM & VARIABLES === */
         :root {
             --primary: #0c6037; 
@@ -21,7 +22,7 @@
             --accent-warm: #C5A059;
             
             --font-serif: 'Playfair Display', 'Georgia', serif;
-            --font-sans: 'Playfair Display', 'Georgia', serif;
+            --font-sans: 'Playfair Display','Georigia', serif;
             
             --radius-sm: 4px;
             --radius-md: 8px;
@@ -45,8 +46,13 @@
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* === NAVBAR === */
-        .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0; background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0;
+            background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(10px);
+            z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            overflow: hidden;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
         .brand-logo { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-warm); letter-spacing: 0.05em; }
         .nav-right { display: flex; align-items: center; gap: 2rem; }
         .nav-links-group { display: flex; align-items: center; gap: 1.5rem; }
@@ -56,6 +62,33 @@
         .cart-icon { font-size: 1.4rem; color: var(--text-main); transition: var(--transition-smooth); }
         .cart-icon:hover { color: var(--accent-warm); }
         .cart-badge { position: absolute; top: -8px; right: -10px; background: var(--primary-light); color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 50%; box-shadow: 0 2px 10px rgba(20, 143, 84, 0.4); }
+
+        /* === DEKORASI AWAN NAVBAR CINEMATIC === */
+        .navbar-cloud-wrap {
+            position: absolute;
+            top: 0; height: 100%;
+            display: flex; align-items: center;
+            pointer-events: none; user-select: none;
+            z-index: 0;
+        }
+        .ncw-left  { left: -35px; }
+        .ncw-right { right: -35px; }
+        .navbar-cloud-wrap img {
+            height: 70px;
+            width: auto;
+            opacity: 0.28;
+            filter: drop-shadow(0 2px 12px rgba(197,160,89,0.25)) sepia(0.1);
+        }
+        .ncw-left  img { animation: awan-nav-l 10s ease-in-out infinite; }
+        .ncw-right img { animation: awan-nav-r 12s ease-in-out infinite 1.8s; }
+        @keyframes awan-nav-l {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50%       { transform: translateX(14px) translateY(-4px); }
+        }
+        @keyframes awan-nav-r {
+            0%, 100% { transform: scaleX(-1) translateX(0px) translateY(0px); }
+            50%       { transform: scaleX(-1) translateX(14px) translateY(-4px); }
+        }
 
         /* === HAMBURGER BUTTON (MOBILE ONLY) === */
         .hamburger-btn {
@@ -94,7 +127,22 @@
 
         /* === PRODUCT GRID === */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; text-align: left; margin-bottom: 2rem; }
-        .product-card { background-color: var(--bg-surface); border-radius: var(--radius-md); padding: 1.5rem; border: 1px solid rgba(197, 160, 89, 0.05); transition: var(--transition-smooth); display: flex; flex-direction: column; position: relative; overflow: hidden; transform-style: preserve-3d; backface-visibility: hidden; }
+        .product-card {
+            background-color: var(--bg-surface); border-radius: var(--radius-md); padding: 1.5rem;
+            border: 1px solid rgba(197, 160, 89, 0.05);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.7s ease;
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(40px);
+        }
+        .product-card.revealed { opacity: 1; transform: translateY(0); }
+        .product-card.revealed:hover {
+            transform: translateY(-10px);
+            border-color: rgba(197, 160, 89, 0.28);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.65), 0 0 0 1px rgba(197,160,89,0.07);
+        }
+        .product-card.revealed:hover .product-image-container img { transform: scale(1.06); }
+        .product-card.revealed:hover h4 { color: var(--accent-warm); transition: color 0.3s ease; }
         .product-image-container { width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-sm); margin-bottom: 1.5rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-base); border: 1px solid rgba(255, 255, 255, 0.03); transform: translateZ(20px); }
         .product-image-container img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth); }
         .prod-badge { position: absolute; top: 12px; left: 12px; background: rgba(7, 10, 8, 0.75); backdrop-filter: blur(5px); border: 1px solid var(--accent-warm); color: var(--accent-warm); padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; border-radius: var(--radius-sm); z-index: 2; }
@@ -134,7 +182,8 @@
         @media screen and (max-width: 768px) {
             body { padding-top: 6rem; }
 
-            /* Sembunyikan nav links desktop, tampilkan hamburger */
+            .navbar-cloud-wrap { display: none; }
+
             .nav-links-group { display: none; }
             .hamburger-btn { display: flex; align-items: center; justify-content: center; }
             .mobile-nav { display: block; }
@@ -157,6 +206,10 @@
 
     <!-- NAVBAR -->
     <nav class="navbar">
+        <!-- Awan Dekorasi Navbar -->
+        <div class="navbar-cloud-wrap ncw-left"><img src="awan2.png" alt=""></div>
+        <div class="navbar-cloud-wrap ncw-right"><img src="awan2.png" alt=""></div>
+
         <div class="container nav-container">
             <a href="index.html" class="brand-logo">Abadi Nanjaya</a>
             <div class="nav-right">
@@ -353,9 +406,8 @@
                             const cards = entry.target.querySelectorAll('.product-card');
                             cards.forEach((card, index) => {
                                 setTimeout(() => {
-                                    card.style.opacity = '1';
-                                    card.style.transform = 'translateY(0) scale(1)';
-                                }, index * 120);
+                                    card.classList.add('revealed');
+                                }, index * 130);
                             });
                         }
                         observer.unobserve(entry.target);
@@ -363,23 +415,11 @@
                 });
             }, { root: null, threshold: 0.05, rootMargin: "0px 0px -20px 0px" });
 
-            // --- 2. Parallax 3D Card ---
-            const grids = document.querySelectorAll('.product-grid');
-            grids.forEach(grid => {
-                const cards = grid.querySelectorAll('.product-card');
-                cards.forEach(card => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(60px) scale(0.96)';
-                    card.style.transition = 'all 0.7s cubic-bezier(0.215, 0.610, 0.355, 1)';
-                    card.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        card.style.transform = `perspective(1000px) rotateX(${(rect.height/2 - y) / 12}deg) rotateY(${(x - rect.width/2) / 12}deg) scale(1.04)`;
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-                    });
+            // --- 2. Stagger Reveal Kartu Produk ---
+            document.querySelectorAll('.product-grid').forEach(grid => {
+                grid.querySelectorAll('.product-card').forEach((card, index) => {
+                    // Stagger reveal saat section terlihat — ditangani oleh observer di bawah
+                    card._revealIndex = index;
                 });
             });
 
