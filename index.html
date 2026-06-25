@@ -33,8 +33,40 @@
             position: fixed; top: 0; left: 0; width: 100%; padding: 1.2rem 0;
             background: rgba(7, 10, 8, 0.95); backdrop-filter: blur(12px);
             z-index: 1000; border-bottom: 1px solid rgba(197, 160, 89, 0.08);
+            overflow: hidden;
         }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
+
+        /* === AWAN NAVBAR CINEMATIC === */
+        .navbar-cloud-wrap {
+            position: absolute;
+            top: 0; height: 100%;
+            display: flex; align-items: center;
+            pointer-events: none; user-select: none;
+            z-index: 0;
+        }
+        .navbar-cloud-wrap.ncw-left  { left: -35px; }
+        .navbar-cloud-wrap.ncw-right { right: -35px; }
+        .navbar-cloud-wrap img {
+            height: 70px;
+            opacity: 0.28;
+            filter: drop-shadow(0 2px 12px rgba(197,160,89,0.25)) sepia(0.1);
+        }
+        .navbar-cloud-wrap.ncw-left  img { animation: awan-nav-l 10s ease-in-out infinite; }
+        .navbar-cloud-wrap.ncw-right img { animation: awan-nav-r 12s ease-in-out infinite 1.8s; }
+        @keyframes awan-nav-l {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50%       { transform: translateX(14px) translateY(-4px); }
+        }
+        @keyframes awan-nav-r {
+            0%, 100% { transform: scaleX(-1) translateX(0px) translateY(0px); }
+            50%       { transform: scaleX(-1) translateX(14px) translateY(-4px); }
+        }
+        @media screen and (max-width: 768px) {
+            .navbar-cloud-wrap img { height: 48px; opacity: 0.2; }
+            .navbar-cloud-wrap.ncw-left  { left: -25px; }
+            .navbar-cloud-wrap.ncw-right { right: -25px; }
+        }
         .brand-logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--accent-warm); letter-spacing: 0.05em; }
         .nav-menu { display: flex; align-items: center; gap: 2.5rem; }
         .nav-links { display: flex; gap: 2rem; }
@@ -168,7 +200,23 @@
         .pilar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
         .pilar-card { background-color: var(--bg-surface); border-radius: var(--radius-md); padding: 3.5rem 2.5rem; text-align: left; border: 1px solid rgba(255, 255, 255, 0.01); transition: var(--transition-smooth); }
         .pilar-card:hover { transform: translateY(-8px); border-color: rgba(197, 160, 89, 0.2); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); }
-        .pilar-icon { font-size: 2.2rem; margin-bottom: 1.8rem; display: inline-block; }
+        .pilar-icon {
+            display: block;
+            margin-bottom: 1.8rem;
+            text-align: center;
+        }
+        .pilar-icon img {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            display: inline-block;
+            filter: drop-shadow(0 4px 12px rgba(197,160,89,0.15));
+            transition: var(--transition-smooth);
+        }
+        .pilar-card:hover .pilar-icon img {
+            filter: drop-shadow(0 6px 18px rgba(197,160,89,0.3));
+            transform: translateY(-4px) scale(1.04);
+        }
         .pilar-card h3 { font-family: var(--font-serif); font-size: 1.45rem; color: var(--text-main); margin-bottom: 1.2rem; font-weight: 600; letter-spacing: 0.02em; }
         .pilar-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; }
 
@@ -315,6 +363,61 @@
             z-index: 1;
         }
 
+        /* === AWAN CINEMATIC === */
+        .wayang-cloud {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0;
+            transition: opacity 1.2s ease, transform 1.6s cubic-bezier(0.76, 0, 0.24, 1);
+            z-index: 1;
+        }
+        .wayang-cloud.show { opacity: 1; }
+        .wayang-cloud img {
+            display: block;
+            filter: drop-shadow(0 6px 20px rgba(197,160,89,0.18)) sepia(0.15);
+        }
+
+        /* Posisi kiri — awan menghadap kanan (scaleX(-1) di keyframe) */
+        .awan-L1 { bottom: 1vh;  left: 3%;  }
+        .awan-L1 img { height: 100px; animation: awan-bob-flip 7s ease-in-out infinite; }
+
+        .awan-L2 { bottom: 22vh; left: 5%;  }
+        .awan-L2 img { height: 60px;  animation: awan-bob-flip 9.5s ease-in-out infinite 1.3s; opacity: 0.85; }
+
+        .awan-L3 { bottom: 42vh; left: 1%;  }
+        .awan-L3 img { height: 40px;  animation: awan-bob-flip 6.5s ease-in-out infinite 2.6s; opacity: 0.6; }
+
+        /* Posisi kanan */
+        .awan-R1 { bottom: 3vh;  right: 3%; }
+        .awan-R1 img { height: 90px;  animation: awan-bob 8s ease-in-out infinite 0.7s; }
+
+        .awan-R2 { bottom: 20vh; right: 6%; }
+        .awan-R2 img { height: 58px;  animation: awan-bob 10s ease-in-out infinite 1.9s; opacity: 0.85; }
+
+        .awan-R3 { bottom: 40vh; right: 2%; }
+        .awan-R3 img { height: 38px;  animation: awan-bob 7s ease-in-out infinite 3.1s; opacity: 0.6; }
+
+        /* Float animations */
+        @keyframes awan-bob {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-18px); }
+        }
+        @keyframes awan-bob-flip {
+            0%, 100% { transform: scaleX(-1) translateY(0px); }
+            50%       { transform: scaleX(-1) translateY(-18px); }
+        }
+
+        /* Drift keluar saat intro close */
+        .awan-L1.open, .awan-L2.open, .awan-L3.open {
+            opacity: 0 !important;
+            transform: translateX(-200px) translateY(30px);
+        }
+        .awan-R1.open, .awan-R2.open, .awan-R3.open {
+            opacity: 0 !important;
+            transform: translateX(200px) translateY(30px);
+        }
+
         body.intro-active { overflow: hidden; }
 
         /* === MARQUEE FOTO RUNNING === */
@@ -431,12 +534,26 @@
             <!-- Wayang Kanan — foto asli wayang2.png (menghadap ke dalam) -->
             <img class="wayang-right" id="wayang-kanan" src="wayang2.png" alt="Wayang Kanan">
 
+            <!-- Awan Cinematic Kiri -->
+            <div class="wayang-cloud awan-L1"><img src="awan1.png" alt=""></div>
+            <div class="wayang-cloud awan-L2"><img src="awan1.png" alt=""></div>
+            <div class="wayang-cloud awan-L3"><img src="awan1.png" alt=""></div>
+
+            <!-- Awan Cinematic Kanan -->
+            <div class="wayang-cloud awan-R1"><img src="awan1.png" alt=""></div>
+            <div class="wayang-cloud awan-R2"><img src="awan1.png" alt=""></div>
+            <div class="wayang-cloud awan-R3"><img src="awan1.png" alt=""></div>
+
             <button class="wayang-skip-btn" id="wayang-skip">Masuk &rarr;</button>
         </div>
     </div>
 
     <!-- NAVBAR NAVIGATION -->
     <nav class="navbar">
+        <!-- Awan Dekorasi Navbar -->
+        <div class="navbar-cloud-wrap ncw-left"><img src="awan2.png" alt=""></div>
+        <div class="navbar-cloud-wrap ncw-right"><img src="awan2.png" alt=""></div>
+
         <div class="container nav-container">
             <a href="index.html" class="brand-logo">Abadi Nanjaya</a>
             <div class="nav-menu">
@@ -520,17 +637,17 @@
                 
                 <div class="pilar-grid">
                     <div class="pilar-card reveal">
-                        <span class="pilar-icon">🎨</span>
+                        <span class="pilar-icon"><img src="Ayam.png" alt="Ayam Nusantara"></span>
                         <h3>Kurasi Motif Autentik</h3>
                         <p>Setiap motif pola tidak digambar asal, melainkan melalui riset mendalam bersama sejarawan adat untuk memastikan keaslian filosofi dan pesan luhur di dalamnya.</p>
                     </div>
                     <div class="pilar-card reveal" style="transition-delay: 0.1s;">
-                        <span class="pilar-icon">🌿</span>
+                        <span class="pilar-icon"><img src="Ular.png" alt="Ular Nusantara"></span>
                         <h3>Pewarnaan Alami Sempurna</h3>
                         <p>Menggunakan ekstrak akar wangi, daun indigofera, dan kulit kayu pilihan untuk menghasilkan spektrum warna natural eksklusif yang ramah lingkungan.</p>
                     </div>
                     <div class="pilar-card reveal" style="transition-delay: 0.2s;">
-                        <span class="pilar-icon">✂️</span>
+                        <span class="pilar-icon"><img src="Harimau.png" alt="Harimau Nusantara"></span>
                         <h3>Bespoke Tailoring Premium</h3>
                         <p>Dipotong secara presisi dan dijahit manual oleh maestro busana berpengalaman, menghasilkan pola potongan yang mengutamakan kenyamanan anatomi tubuh.</p>
                     </div>
@@ -739,6 +856,8 @@
                 function closeIntro() {
                     wayangKiri.classList.add('open');
                     wayangKanan.classList.add('open');
+                    // Drift awan keluar
+                    document.querySelectorAll('.wayang-cloud').forEach(c => c.classList.add('open'));
                     setTimeout(() => {
                         intro.classList.add('fade-out');
                         document.body.classList.remove('intro-active');
@@ -747,8 +866,11 @@
                     }, 1000);
                 }
 
-                // Tampilkan teks tengah setelah 0.5s
-                setTimeout(() => { wayangText.classList.add('show'); }, 500);
+                // Tampilkan teks tengah + awan setelah 0.5s
+                setTimeout(() => {
+                    wayangText.classList.add('show');
+                    document.querySelectorAll('.wayang-cloud').forEach(c => c.classList.add('show'));
+                }, 500);
 
                 // Auto-close setelah 4 detik
                 let autoTimer = setTimeout(closeIntro, 4000);
